@@ -126,13 +126,6 @@
     "claimed": "Blue",
     "unclaimed": "noonewould"
   },
-  "Asciinema": {
-    "error_type": "status_code",
-    "url": "https://asciinema.org/~{}",
-    "url_main": "https://asciinema.org",
-    "claimed": "red",
-    "unclaimed": "noonewouldeverusethis7"
-  },
   "Ask Fedora": {
     "error_type": "status_code",
     "url": "https://ask.fedoraproject.org/u/{}",
@@ -232,16 +225,6 @@
     "claimed": "bikemap",
     "unclaimed": "noonewouldeverusethis7"
   },
-  "BinarySearch": {
-    "error_msg": "{}",
-    "error_type": "message",
-    "regexCheck": "^[a-zA-Z0-9-_]{1,15}$",
-    "url": "https://binarysearch.io/@/{}",
-    "url_main": "https://binarysearch.io/",
-    "urlProbe": "https://binarysearch.io/api/users/{}/profile",
-    "claimed": "Eyes_Wide_Shut",
-    "unclaimed": "hihowareyou101"
-  },
   "BioHacking": {
     "error_type": "status_code",
     "url": "https://forum.dangerousthings.com/u/{}",
@@ -264,14 +247,6 @@
     "url_main": "https://bitcoinforum.com",
     "claimed": "bitcoinforum.com",
     "unclaimed": "noonewouldeverusethis7"
-  },
-  "Bitwarden Forum": {
-    "error_type": "status_code",
-    "regexCheck": "^(?![.-])[a-zA-Z0-9_.-]{3,20}$",
-    "url": "https://community.bitwarden.com/u/{}/summary",
-    "url_main": "https://bitwarden.com/",
-    "claimed": "blue",
-    "unclaimed": "noonewouldeverusethi"
   },
   "Blogger": {
     "error_type": "status_code",
@@ -2305,13 +2280,6 @@
     "claimed": "blue",
     "unclaimed": "noonewouldeverusethis"
   },
-  "aminoapp": {
-    "error_type": "status_code",
-    "url": "https://aminoapps.com/u/{}",
-    "url_main": "https://aminoapps.com/",
-    "claimed": "blue",
-    "unclaimed": "noonewouldeverusethis77777"
-  },
   "authorSTREAM": {
     "error_type": "status_code",
     "url": "http://www.authorstream.com/{}/",
@@ -2458,13 +2426,6 @@
     "url": "https://www.geocaching.com/p/default.aspx?u={}",
     "url_main": "https://www.geocaching.com/",
     "claimed": "blue",
-    "unclaimed": "noonewouldeverusethis7"
-  },
-  "gfycat": {
-    "error_type": "status_code",
-    "url": "https://gfycat.com/@{}",
-    "url_main": "https://gfycat.com/",
-    "claimed": "Test",
     "unclaimed": "noonewouldeverusethis7"
   },
   "habr": {
@@ -2757,14 +2718,6 @@
     "url": "https://sessionize.com/{}",
     "url_main": "https://sessionize.com/",
     "claimed": "jason-mayes",
-    "unclaimed": "noonewouldeverusethis7"
-  },
-  "skyrock": {
-    "error_type": "status_code",
-    "regexCheck": "^[a-zA-Z0-9@_-]$",
-    "url": "https://{}.skyrock.com/",
-    "url_main": "https://skyrock.com/",
-    "claimed": "red",
     "unclaimed": "noonewouldeverusethis7"
   },
   "social.tchncs.de": {

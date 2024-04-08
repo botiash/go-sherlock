@@ -1,7 +1,14 @@
 package main
 
-import "github.com/botiash/sherlock/internal/handler"
+import (
+	"log"
+	"net/http"
+
+	"github.com/botiash/sherlock/internal/handler"
+)
 
 func main() {
-	handler.Run()
+	http.HandleFunc("/", handler.HandleWebInterface)
+	http.HandleFunc("/download/", handler.HandleFileDownload)
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }

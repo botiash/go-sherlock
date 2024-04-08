@@ -2,11 +2,9 @@ package pkg
 
 import (
 	"fmt"
-	"io"
 	"io/ioutil"
 	"net/http"
 	"strings"
-	"sync"
 
 	"github.com/botiash/sherlock/internal/config"
 )
@@ -33,49 +31,40 @@ func FetchURL(url string) (string, error) {
 }
 
 // Worker осуществляет поиск на указанном веб-сайте по имени пользователя и его имени/фамилии или никнейму.
-func Worker(website config.WebSite, query string, wg *sync.WaitGroup, byFullName bool, file io.Writer) {
-	defer wg.Done()
+func Worker(website config.WebSite, query string, searchType string) string {
+	var result strings.Builder
 
-	if byFullName {
+	// Проверяем тип поиска
+	if searchType == "fullName" {
 		firstName, lastName := extractFullNameParts(query)
 		if firstName == "" || lastName == "" {
-			fmt.Fprintln(file, "Invalid format for full name. Please provide both first name and last name.")
-			fmt.Println("Invalid format for full name. Please provide both first name and last name.")
-			return
+			result.WriteString("Invalid format for full name. Please provide both first name and last name.\n")
+			return result.String()
 		}
 		fullName := fmt.Sprintf("%s %s", firstName, lastName)
 		website.PutUserToURL(fullName)
-	} else {
+	} else if searchType == "username" {
 		website.PutUserToURL(query)
-	}
-
-	if byFullName {
-		fullName := extractFullName(query)
-		if fullName == "" {
-			fmt.Println("Invalid format for full name. Please provide both first name and last name.")
-			return
-		}
-		website.PutUserToURL(fullName)
 	} else {
-		website.PutUserToURL(query)
+		result.WriteString("Invalid search type.\n")
+		return result.String()
 	}
 
 	response, err := FetchURL(website.URL)
 	if err != nil {
-		fmt.Printf("error fetching URL %s: %v\n", website.URL, err)
-		return
+		result.WriteString(fmt.Sprintf("Error fetching URL %s: %v\n", website.URL, err))
+		return result.String()
 	}
 
 	if IsMatch(response, website.Claimed) {
-		fmt.Printf("User %s claimed on %s\n", query, website.URLMain)
-		fmt.Fprintf(file, "User %s claimed on %s\n", query, website.URLMain)
+		result.WriteString(fmt.Sprintf("User %s claimed on %s\n", query, website.URLMain))
 	} else if IsMatch(response, website.Unclaimed) {
-		fmt.Printf("User %s unclaimed on %s\n", query, website.URLMain)
-		fmt.Fprintf(file, "User %s unclaimed on %s\n", query, website.URLMain)
+		result.WriteString(fmt.Sprintf("User %s unclaimed on %s\n", query, website.URLMain))
 	} else {
-		fmt.Printf("User %s status unknown on %s\n", query, website.URLMain)
-		fmt.Fprintf(file, "User %s status unknown on %s\n", query, website.URLMain)
+		result.WriteString(fmt.Sprintf("User %s status unknown on %s\n", query, website.URLMain))
 	}
+
+	return result.String()
 }
 
 func extractFullName(input string) string {

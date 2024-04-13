@@ -27,6 +27,13 @@
     "claimed": "blue",
     "unclaimed": "noonewouldeverusethis7"
   },
+  "LinkedIn": {
+    "error_type": "status_code",
+    "url": "https://www.linkedin.com/in/{}",
+    "url_main": "https://www.linkedin.com",
+    "claimed": "Profile found", 
+    "unclaimed": "Profile not found" 
+},
   "Academia.edu": {
     "error_type": "status_code",
     "regexCheck": "^[^.]*$",

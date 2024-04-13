@@ -3,6 +3,7 @@ package config
 import (
 	"encoding/json"
 	"fmt"
+	"net/url"
 	"os"
 	"strings"
 )
@@ -31,14 +32,13 @@ func ParseSites(web *WebSites) error {
 	}
 	return nil
 }
+
 func (web *WebSite) PutUserToURL(user string) {
-	if fmt.Sprintf("%v", web.ErrorMsg) == "" {
-		fmt.Println(web.URLMain)
-	}
-	web.URL = strings.ReplaceAll(web.URL, "{}", user)
+	encodedUser := url.PathEscape(user) // Encode the user string to handle special characters in URLs
+	web.URL = strings.ReplaceAll(web.URL, "{}", encodedUser)
 
 	if web.URLProbe != "" {
-		web.URLProbe = strings.ReplaceAll(web.URLProbe, "{}", user)
+		web.URLProbe = strings.ReplaceAll(web.URLProbe, "{}", encodedUser)
 	}
 }
 

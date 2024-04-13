@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"log"
@@ -10,21 +11,20 @@ import (
 )
 
 func HandleFileDownload(w http.ResponseWriter, r *http.Request) {
-    fileName := filepath.Base(r.URL.Path)
+	fileName := filepath.Base(r.URL.Path)
 
-    filePath := "./" + fileName // Adjust the file path
+	filePath := "./" + fileName // Adjust the file path
 	log.Println("adddsef ", filePath)
-    // Check if the file exists
-    if _, err := os.Stat(filePath); os.IsNotExist(err) {
-        http.Error(w, "File not found", http.StatusNotFound)
-        return
-    }
+	// Check if the file exists
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		http.Error(w, "File not found", http.StatusNotFound)
+		return
+	}
 
-    // Set Content-Disposition header to prompt download
-    w.Header().Set("Content-Disposition", "attachment; filename="+fileName)
-    http.ServeFile(w, r, filePath)
+	// Set Content-Disposition header to prompt download
+	w.Header().Set("Content-Disposition", "attachment; filename="+fileName)
+	http.ServeFile(w, r, filePath)
 }
-
 
 func HandleWebInterface(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
@@ -33,7 +33,24 @@ func HandleWebInterface(w http.ResponseWriter, r *http.Request) {
 		tmpl.Execute(w, nil)
 	}
 	if r.Method == "POST" {
-		if r.Method == "POST" {
+		if r.FormValue("type") == "ipLookup" {
+			ip := r.FormValue("ip")
+			if !IPRegex(ip) {
+				http.Error(w, "Invalid IP address", http.StatusBadRequest)
+				return
+			}
+
+			result, err := FetchIPDetails(ip)
+			if err != nil {
+				http.Error(w, "Failed to fetch IP details", http.StatusInternalServerError)
+				return
+			}
+
+			// Convert result to JSON or handle it as needed
+			response, _ := json.Marshal(result)
+			w.Header().Set("Content-Type", "application/json")
+			w.Write(response)
+		} else {
 			query := r.FormValue("query")
 			searchType := r.FormValue("searchType")
 			fileName := r.FormValue("fileName") // Get the filename from the form
@@ -49,8 +66,8 @@ func HandleWebInterface(w http.ResponseWriter, r *http.Request) {
 
 			// Send a link to download the file
 			fmt.Fprintf(w, "<a href='/download/%s'>Download Results</a>", fileName)
-		} else {
-			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}
+	} else {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
 }

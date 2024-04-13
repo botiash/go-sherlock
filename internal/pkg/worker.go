@@ -34,14 +34,13 @@ func FetchURL(url string) (string, error) {
 func Worker(website config.WebSite, query string, searchType string) string {
 	var result strings.Builder
 
-	// Проверяем тип поиска
 	if searchType == "fullName" {
 		firstName, lastName := extractFullNameParts(query)
 		if firstName == "" || lastName == "" {
 			result.WriteString("Invalid format for full name. Please provide both first name and last name.\n")
 			return result.String()
 		}
-		fullName := fmt.Sprintf("%s %s", firstName, lastName)
+		fullName := firstName + " " + lastName  
 		website.PutUserToURL(fullName)
 	} else if searchType == "username" {
 		website.PutUserToURL(query)
@@ -76,5 +75,7 @@ func extractFullNameParts(fullName string) (string, string) {
 	if len(parts) < 2 {
 		return "", ""
 	}
-	return parts[0], parts[1]
+	firstName := strings.Join(parts[:len(parts)-1], " ")
+    lastName := parts[len(parts)-1]
+    return firstName, lastName
 }

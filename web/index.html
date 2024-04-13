@@ -22,7 +22,7 @@
             margin-top: 20px;
         }
 
-        input[type="text"] {
+        input[type="text"], input[type="text"] {
             padding: 8px;
             font-size: 16px;
             border: 1px solid #ccc;
@@ -81,12 +81,27 @@
         <br>
         <button type="submit">Search</button>
     </form>
+    
+    <!-- New IP Lookup Form -->
+    <form id="ipForm">
+        <label for="ip">Enter IP address:</label>
+        <input type="text" id="ip" name="ip" placeholder="Enter IP address">
+        <input type="hidden" name="type" value="ipLookup">
+        <button type="submit">Lookup IP</button>
+    </form>
 
     <div id="spinner" class="spinner"></div>
     <div id="searchResults"></div>
 
     <script>
         document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            showSpinner();
+            var formData = new FormData(this);
+            search(formData);
+        });
+
+        document.getElementById('ipForm').addEventListener('submit', function(event) {
             event.preventDefault();
             showSpinner();
             var formData = new FormData(this);
